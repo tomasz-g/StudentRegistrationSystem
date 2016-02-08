@@ -6,11 +6,11 @@ public class Student {
 	private String studentCourse;
 	private boolean feePaid;
 	
-	public Student(int studentId, String studentName, String studentCourse) {
+	public Student() {
 		
-		this.studentId = studentId;
-		this.studentName = studentName;
-		this.studentCourse = studentCourse;		
+		this.studentId = 0;
+		this.studentName = null;
+		this.studentCourse = null;		
 		feePaid = false;
 	}
 	

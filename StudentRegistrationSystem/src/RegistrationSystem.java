@@ -100,7 +100,7 @@ import java.io.InputStreamReader;
 	
 	public static void addStudent() {
 		
-		Student newStudent = new Student(studentId, name, course);
+		Student newStudent = new Student();
 		students.add(newStudent);
 		if (newStudent.getCourse() == "Computer Science") {
 			computerScienceStudents.add(newStudent);
