@@ -17,10 +17,6 @@ public class Student {
 	public int getId() {
 		return studentId;
 	}	
-	
-	void changeId(int studentId) {
-		this.studentId = studentId;
-	}
 
 	public String getName() {
 		return studentName;
