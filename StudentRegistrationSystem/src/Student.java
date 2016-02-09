@@ -17,12 +17,16 @@ public class Student {
 	public int getId() {
 		return studentId;
 	}	
+	
+	public void setId(int studentId) {
+		this.studentId = studentId;
+	}
 
 	public String getName() {
 		return studentName;
 	}
 	
-	public void changeName(String studentName) {
+	public void setName(String studentName) {
 		this.studentName = studentName;
 	}
 	
@@ -30,7 +34,7 @@ public class Student {
 		return studentCourse;
 	}
 	
-	public void changeCourse(String studentCourse) {
+	public void chooseCourse(String studentCourse) {
 		this.studentCourse = studentCourse;
 	}
 	
@@ -38,8 +42,8 @@ public class Student {
 		return feePaid;
 	}
 	
-	public void payFee(boolean feePaid) {
-		this.feePaid = feePaid;
+	public void payFee() {
+		feePaid = true;
 	}
 	
 	public void print() {
