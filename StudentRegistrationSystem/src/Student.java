@@ -48,7 +48,7 @@ public class Student {
 	
 	public void print() {
 		String studentFee;
-		if (feePaid) {
+		if (feePaid == true) {
 			studentFee = "yes";
 		}
 		else {

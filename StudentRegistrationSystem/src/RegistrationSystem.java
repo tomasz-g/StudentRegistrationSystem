@@ -16,10 +16,7 @@ import java.io.InputStreamReader;
 	 
 	 static int studentId = 1;
 	 
-	 static String course;
-	 static String name;
-
-	
+	 
 	 private static void mainMenu() {
 		
 		System.out.println("Press 1 to add stdent");
@@ -103,9 +100,9 @@ import java.io.InputStreamReader;
 		
 		String userChoice = input.next();
 		
-		if (userChoice == "y") {
+		if (userChoice.equals("y")) {
 			newStudent.payFee();
-		}
+			}
 		
 		students.add(newStudent);
 		studentId++;
@@ -116,40 +113,42 @@ import java.io.InputStreamReader;
 		
 		System.out.println("*********************************");
 		System.out
-				.println("Press 1 for Computer Science class \n Press 2 for Game Design class \n Press 3 for all Students");
+				.println("Press 1 for Computer Science class \n Press 2 for Game Design class \n"
+						+ " Press 3 for all Students \n Press 4 for main menu");
 		System.out.println("*********************************");
 
 		String userChoice = input.next();
+		ArrayList<Student> studentsToPrint = null;
 		
 		switch (userChoice) {
 			case "1": {
-				for(Student studentDetails : computerScienceStudents) {
-					studentDetails.print();
-				}
+				studentsToPrint = computerScienceStudents;
+				break;
 			}
-			
-			case "2": {
-				for(Student studentDetails : gameDesignStudents) {
-					studentDetails.print();
-					break;
-				}
+			case "2": {  
+				studentsToPrint = gameDesignStudents;
+				break;
 			}
-			
 			case "3": {
-				for(Student studentDetails : students) {
-					studentDetails.print();
-					break;
-				}
+				studentsToPrint = students;
+				break;
 			}
-			
-			default:{
-				System.out.println("Wrong number, try again");
+			case "4": {
+				mainMenu();
+				break;
+			}
+			default: {
+				System.out.println("Wrong number, try again"); 
 				studentInformation();
 				break;
 			}
 		}
 		
-		mainMenu();
+		for(Student studentDetails : studentsToPrint) {
+			studentDetails.print();
+		}
+		
+		studentInformation();
 	}
 
 
