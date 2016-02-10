@@ -10,9 +10,9 @@ import java.io.InputStreamReader;
 	 static BufferedReader input2 = new BufferedReader(new InputStreamReader(System.in));
 	 
 	
-	 static ArrayList<Student> students = new ArrayList<Student>();
-	 static ArrayList<Student> computerScienceStudents = new ArrayList<Student>();
-	 static ArrayList<Student> gameDesignStudents = new ArrayList<Student>();
+	 static ArrayList<Student> allStudents = new ArrayList<Student>();
+	 static ArrayList<Student> computerScienceallStudents = new ArrayList<Student>();
+	 static ArrayList<Student> gameDesignallStudents = new ArrayList<Student>();
 	 
 	 static int studentId = 1;
 	 
@@ -88,14 +88,14 @@ import java.io.InputStreamReader;
 			
 				case "1": {
 					newStudent.chooseCourse("Computer Science");
-					computerScienceStudents.add(newStudent);
-					students.add(newStudent);
+					computerScienceallStudents.add(newStudent);
+					allStudents.add(newStudent);
 					break;
 				}
 				case "2": {
 					newStudent.chooseCourse("Game Design     ");
-					gameDesignStudents.add(newStudent);
-					students.add(newStudent);
+					gameDesignallStudents.add(newStudent);
+					allStudents.add(newStudent);
 					break;
 				}
 				default : {
@@ -121,23 +121,23 @@ import java.io.InputStreamReader;
 		System.out.println("*********************************");
 		System.out
 				.println(" Press 1 for Computer Science class \n Press 2 for Game Design class \n"
-						+ " Press 3 for all Students \n Press 4 for main menu");
+						+ " Press 3 for all allStudents \n Press 4 for main menu");
 		System.out.println("*********************************");
 
 		String userChoice = input.next();
-		ArrayList<Student> studentsToPrint = null;
+		ArrayList<Student> allStudentsToPrint = null;
 		
 		switch (userChoice) {
 			case "1": {
-				studentsToPrint = computerScienceStudents;
+				allStudentsToPrint = computerScienceallStudents;
 				break;
 			}
 			case "2": {  
-				studentsToPrint = gameDesignStudents;
+				allStudentsToPrint = gameDesignallStudents;
 				break;
 			}
 			case "3": {
-				studentsToPrint = students;
+				allStudentsToPrint = allStudents;
 				break;
 			}
 			case "4": {
@@ -151,12 +151,12 @@ import java.io.InputStreamReader;
 			}
 		}
 		
-		if (studentsToPrint.size() < 1) {
-			System.out.println("No students registered in this class");
+		if (allStudentsToPrint.size() < 1) {
+			System.out.println("No allStudents registered in this class");
 		}
 		else {
 			System.out.println("______________________________________________________________________________________________");
-			for(Student studentDetails : studentsToPrint) {
+			for(Student studentDetails : allStudentsToPrint) {
 				studentDetails.print();
 			}
 		}
