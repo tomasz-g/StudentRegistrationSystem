@@ -55,10 +55,11 @@ import java.io.InputStreamReader;
 		
 		try {
 			System.out.println("*********************************");
-			System.out.println("Enter student Name and Surname:");
+			System.out.println(" Enter student Name and Surname \n seperayed by space:");
 			System.out.println("*********************************");
 
 			String studentName = input2.readLine();		
+			System.out.println(studentName.split(" ").length);
 			newStudent.setName(studentName);
 		}
 		
@@ -68,6 +69,7 @@ import java.io.InputStreamReader;
 		}
 		
 		newStudent.setId(studentId);
+		studentId++;
 		
 		while (newStudent.getCourse() == null) {
 			
@@ -82,11 +84,13 @@ import java.io.InputStreamReader;
 				case "1": {
 					newStudent.chooseCourse("Computer Science");
 					computerScienceStudents.add(newStudent);
+					students.add(newStudent);
 					break;
 				}
 				case "2": {
-					newStudent.chooseCourse("Game Design");
+					newStudent.chooseCourse("Game Design     ");
 					gameDesignStudents.add(newStudent);
+					students.add(newStudent);
 					break;
 				}
 				default : {
@@ -104,8 +108,6 @@ import java.io.InputStreamReader;
 			newStudent.payFee();
 			}
 		
-		students.add(newStudent);
-		studentId++;
 		mainMenu();
 	}
 	
@@ -113,7 +115,7 @@ import java.io.InputStreamReader;
 		
 		System.out.println("*********************************");
 		System.out
-				.println("Press 1 for Computer Science class \n Press 2 for Game Design class \n"
+				.println(" Press 1 for Computer Science class \n Press 2 for Game Design class \n"
 						+ " Press 3 for all Students \n Press 4 for main menu");
 		System.out.println("*********************************");
 
@@ -144,10 +146,18 @@ import java.io.InputStreamReader;
 			}
 		}
 		
-		for(Student studentDetails : studentsToPrint) {
-			studentDetails.print();
+		if (studentsToPrint.size() < 1) {
+			System.out.println("No students registered in this class");
+		}
+		else {
+			System.out.println("______________________________________________________________________________________________");
+			for(Student studentDetails : studentsToPrint) {
+				studentDetails.print();
+			}
 		}
 		
+		System.out.println("______________________________________________________________________________________________");
+		System.out.println("*" );
 		studentInformation();
 	}
 

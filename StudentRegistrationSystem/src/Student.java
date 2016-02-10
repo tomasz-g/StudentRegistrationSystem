@@ -50,12 +50,14 @@ public class Student {
 		String studentFee;
 		if (feePaid == true) {
 			studentFee = "yes";
-		}
+		}  
 		else {
 			studentFee = "no";
 		}
-		System.out.println("Student ID: " + studentId + "\t" + "Name: " + studentName + "\t" + "Course: " + studentCourse + "\t"
-				+ "Fee Paid: " + studentFee);
+		String formatedId = String.format("%03d", studentId);
+		System.out.print("| Student ID: " + formatedId + " | " + " Student Name: " + studentName 
+				+ " | " + "Course: " + studentCourse + " | "
+				+ "Fee Paid: " + studentFee + " |\n");
 	}
 
 }
