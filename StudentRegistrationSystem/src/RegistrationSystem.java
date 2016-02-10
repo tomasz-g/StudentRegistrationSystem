@@ -55,16 +55,21 @@ import java.io.InputStreamReader;
 		
 		try {
 			System.out.println("*********************************");
-			System.out.println(" Enter student Name and Surname \n seperayed by space:");
+			System.out.println(" Enter student Name and Surname \n       seperated by space:");
 			System.out.println("*********************************");
 
 			String studentName = input2.readLine();		
-			System.out.println(studentName.split(" ").length);
+			
+			if (studentName.split(" ").length != 2) {
+				System.out.println(" Enter one word for name and one for surname, \n "
+						+ "if name or surname has more than one word seperate them by dash key '-'");
+				addStudent();
+			}
 			newStudent.setName(studentName);
 		}
 		
 		catch (IOException e) {
-			System.out.println("Error, please try again");
+			System.out.println(" Error, wrong input  \n please try again");
 			addStudent();
 		}
 		
@@ -100,7 +105,7 @@ import java.io.InputStreamReader;
 			}
 		}
 		
-		System.out.println("Press 'y' if student pay fee now \n Press any other key if student pay fee later");
+		System.out.println(" Press 'y' if student pay fee now \n Press any other key if student pay fee later");
 		
 		String userChoice = input.next();
 		
