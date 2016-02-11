@@ -72,6 +72,9 @@ import java.io.IOException;
 
 			String studentName = input2.readLine();		
 			
+//			System.out.println(studentName.substring(0,1).toUpperCase());
+//			System.out.println(studentName.substring(1).toLowerCase());
+			
 			if (studentName.split(" ").length == 2 && correctFormat(studentName)) {
 				allStudents.get(studentIndex).setName(studentName);
 				chooseStudentCourse(studentIndex);
@@ -208,7 +211,7 @@ import java.io.IOException;
 	public static void adminMenu() {
 		
 		System.out.println("***********************************");
-		System.out.println(" Press 1 to change or delete student details \n"
+		System.out.println(" Press 1 to change or delete student \n"
 				+ " Press 2 to check students payments \n"
 				+ " Press 3 to make payment \n"
 				+ " Press 4 to back to main menu");		
@@ -297,8 +300,10 @@ import java.io.IOException;
 	
 	public static void printPayments() {
 		
+		System.out.println("***********************************");
 		System.out.println(" Press 1 to print students who didn't pay  \n "
 				+ "Press 2 to print students who have paid");
+		System.out.println("*********************************** \n");
 		
 		String adminChoice = input.next();
 		
@@ -351,8 +356,10 @@ import java.io.IOException;
 			allStudents.get(studentIndex).print();
 			System.out.print("---------------------------------------------------------\n \n");
 			
+			System.out.println("***********************************");
 			System.out.println(" Press 'y' to make a payment \n for abowe student \n"
 					+ " or any key to back to admin menu");
+			System.out.println("*********************************** \n");
 			
 			String adminChoice = input.next();
 			if (adminChoice.equals("y")) {
@@ -397,6 +404,9 @@ import java.io.IOException;
 			char spaceCharacter = ' ';
 			char charInput = userInput.charAt(charIndx);
 			if (!Character.isLetter(charInput) && charInput != spaceCharacter) {
+				return false;
+			}
+			else if(charInput == spaceCharacter && charIndx == 0) {
 				return false;
 			}
 		}
