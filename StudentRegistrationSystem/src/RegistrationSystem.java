@@ -40,9 +40,7 @@ import java.io.IOException;
 				break;
 			}
 			case "3": {
-//				adminMenu();
-				System.out.println("Not implemented yet....");
-				mainMenu();
+				adminMenu();
 				break;
 			}
 			default:{
@@ -105,12 +103,10 @@ import java.io.IOException;
 			
 				case "1": {
 					allStudents.get(studentIndex).chooseCourse("Computer Science");
-					computerScienceStudents.add(allStudents.get(studentIndex));
 					break;
 				}
 				case "2": {
 					allStudents.get(studentIndex).chooseCourse("Game Design     ");
-					gameDesignStudents.add(allStudents.get(studentIndex));
 					break;
 				}
 				default : {
@@ -152,11 +148,23 @@ import java.io.IOException;
 		
 		switch (userChoice) {
 			case "1": {
+				computerScienceStudents.clear();
+				for (Student studentCourse : allStudents) {
+					if (studentCourse.getCourse() == "Computer Science") {
+						computerScienceStudents.add(studentCourse);
+					}
+				}				
 				printStudentsDetails(computerScienceStudents);
 				studentInformation();
 				break;
 			}
 			case "2": {  
+				gameDesignStudents.clear();
+				for (Student studentCourse : allStudents) {
+					if (studentCourse.getCourse() == "Game Design     ") {
+						gameDesignStudents.add(studentCourse);
+					}
+				}
 				printStudentsDetails(gameDesignStudents);
 				studentInformation();
 				break;
@@ -197,152 +205,174 @@ import java.io.IOException;
 	}
 
 	
+	public static void adminMenu() {
+		
+		System.out.println("***********************************");
+		System.out.println(" Press 1 to change or delete student details \n"
+				+ " Press 2 to check students payments \n"
+				+ " Press 3 to make payment \n"
+				+ " Press 4 to back to main menu");		
+		System.out.println("***********************************\n");
+		
+		String adminChoice = input.next();
+		
+		switch (adminChoice) {
+			case "1": {
+				changeStudentDetails();
+				break;
+			}
+			case "2": {
+				printPayments();
+				break;
+			}
+			case "3": {
+				makePayment();
+				break;
+			}
+			case "4": {
+				mainMenu();
+				break;
+			}
+			default: {
+				System.out.println("Wrong input, try again");
+				adminMenu();
+			}
+		}
+	}
 	
-//	public static void adminMenu() {
-//		
-//		System.out.println("***********************************");
-//		System.out.println("Press 1 to change student details \n"
-//				+ "Press 2 to delete student \n Press 3 to check students payments");		
-//		System.out.println("***********************************\n");
-//		
-//		String adminChoice = input.next();
-//		
-//		switch (adminChoice) {
-//			case "1": {
-//				changeStudentDetails();
-//				break;
-//			}
-//			case "2": {
-//				deleteStudent(studentIndex);
-//				break;
-//			}
-//			case "3": {
-//				printPayment();
-//				break;
-//			}
-//			default: {
-//				System.out.println("Wrong input, try again");
-//				adminMenu();
-//			}
-//		}
-//	}
 	
-	
-//	public static void changeStudentDetails() {
-//		
-//		System.out.println("***********************************");
-//		System.out.println(" Choose student by ID \n from the list below:");
-//		System.out.println("***********************************\n");
-//
-//		printStudentsDetails(allStudents);
-//
-//		try {
-//			
-//			int studentIndex = input.nextInt() -1;
-//			allStudents.get(studentIndex);
-//			System.out.print("   ID \t   Student Name \t Course \t Fee Paid \n");
-//			System.out.print("---------------------------------------------------------\n");
-//			allStudents.get(studentIndex).print();
-//			System.out.print("---------------------------------------------------------\n \n");
-//			
-//			chooseAction(studentIndex);
-//		}
-//		
-//		catch (Exception e) {
-//			
-//			System.out.println("Wrong input, try again");
-//			adminMenu();
-//		}	
-//	}
-//	
-//	
-//	public static void chooseAction(int studentIndex) {
-//		
-//		System.out.println(" Press 1 to change student Name \n"
-//				+ "Press 2 to change student class \n"
-//				+ "Press 3 for payment \n"
-//				+ "Press 4 to remove student fro the system"
-//				+ "Press 5 to back to Main Menu");
-//		
-//		String adminChoice = input.next();
-//		
-//		switch (adminChoice) {
-//			
-//			case "1": {
-////				NEED TO CHANGE IN THE GAME OR SCIENCE CLASS TO!!!
-//				
-//				
-//				break;
-//			}
-//			case "2": {
-//				break;
-//			}
-//			case "3": {
-//				break;
-//			}
-//			case "4": {
-//				deleteStudent(studentIndex);
-//				break;
-//			}
-//			case "5": {
-//				mainMenu();
-//				break;
-//			}
-//			default: {
-//				System.out.println("Wrong input, try again");
-//				break;
-//			}
-//			
-//		}
-//	}
+	public static void changeStudentDetails() {
+		
+		System.out.println("***********************************");
+		System.out.println(" Choose student by ID \n from the list below:");
+		System.out.println("***********************************\n");
 
+		printStudentsDetails(allStudents);
+
+		try {
+			
+			int studentIndex = input.nextInt() -1;
+			allStudents.get(studentIndex);
+			System.out.print("   ID \t   Student Name \t Course \t Fee Paid \n");
+			System.out.print("---------------------------------------------------------\n");
+			allStudents.get(studentIndex).print();
+			System.out.print("---------------------------------------------------------\n \n");
+			
+			System.out.println("***********************************");
+			System.out.println(" Press 1 to change details of abowe student \n"
+					+ " Press 2 to delete student \n "
+					+ " Press any key to back to admin menu");
+			System.out.println("***********************************\n");
+			
+			String adminChoice = input.next();
+			
+			switch (adminChoice) {
+				case "1": {
+					setStudentName(studentIndex);
+					break;
+				}
+				case "2": {
+					deleteStudent(studentIndex);
+					break;
+				}
+				default: {
+					adminMenu();
+				}
+			}
+		}		
+		catch (Exception e) {
+			
+			System.out.println("Wrong input, try again");
+			adminMenu();
+		}	
+	}
 	
-//	public static void deleteStudent(int studentIndex) {
-//		
-//		allStudents.remove(studentIndex);
-////		NEED TO REMOVE FROM THE GAME OR SCIENCE CLASS TO!!!
-//		mainMenu();
-//		
-//	}
-//	
-//	
-//	public static void printPayment() {
-//		
-//		System.out.println(" Press 1 to check students with payment \n "
-//				+ "Press 2 to check students without payment");
-//		
-//		String adminChoice = input.next();
-//		
-//		switch (adminChoice) {
-//			case "1": {
-//				for (int studentIndex = 0; studentIndex < allStudents.size(); studentIndex++) {
-//					
-//					System.out.print("   ID \t   Student Name \t Course \t Fee Paid \n");
-//					System.out.print("---------------------------------------------------------\n");
-//					if (allStudents.get(studentIndex).getFee()) {
-//						allStudents.get(studentIndex).print();
-//					}
-//					System.out.print("---------------------------------------------------------\n \n");					
-//				}
-//				
-//			}
-//			case "2": {
-//				for (int studentIndex = 0; studentIndex < allStudents.size(); studentIndex++) {
-//					
-//					System.out.print("   ID \t   Student Name \t Course \t Fee Paid \n");
-//					System.out.print("---------------------------------------------------------\n");
-//					if (!allStudents.get(studentIndex).getFee()) {
-//						allStudents.get(studentIndex).print();
-//					}
-//					System.out.print("---------------------------------------------------------\n \n");					
-//				}
-//			}
-//			default: {
-//				System.out.println("Wrong input, try again");
-//				printPayment();
-//			}
-//		}
-//	}
+	
+	public static void deleteStudent(int studentIndex) {
+		
+		allStudents.remove(studentIndex);
+		adminMenu();
+	}
+	
+	
+	public static void printPayments() {
+		
+		System.out.println(" Press 1 to print students who didn't pay  \n "
+				+ "Press 2 to print students who have paid");
+		
+		String adminChoice = input.next();
+		
+		switch (adminChoice) {
+			case "1": {
+				System.out.print("   ID \t   Student Name \t Course \t Fee Paid \n");
+				System.out.print("---------------------------------------------------------\n");
+				for (int studentIndex = 0; studentIndex < allStudents.size(); studentIndex++) {
+					if (!allStudents.get(studentIndex).getFee()) {
+						allStudents.get(studentIndex).print();
+					}
+				}
+				System.out.print("---------------------------------------------------------\n \n");					
+				break;
+			}
+			case "2": {
+				System.out.print("   ID \t   Student Name \t Course \t Fee Paid \n");
+				System.out.print("---------------------------------------------------------\n");
+				for (int studentIndex = 0; studentIndex < allStudents.size(); studentIndex++) {
+					if (allStudents.get(studentIndex).getFee()) {
+						allStudents.get(studentIndex).print();
+					}
+				}
+				System.out.print("---------------------------------------------------------\n \n");					
+				break;
+			}
+			default: {
+				System.out.println("Wrong input, try again");
+				printPayments();
+			}
+		}
+		adminMenu();
+	}
+	
+	
+	public static void makePayment() {
+		
+		System.out.println("***********************************");
+		System.out.println(" Choose student by ID \n from the list below:");
+		System.out.println("***********************************\n");
+
+		printStudentsDetails(allStudents);
+
+		try {
+			
+			int studentIndex = input.nextInt() -1;
+			allStudents.get(studentIndex);
+			System.out.print("   ID \t   Student Name \t Course \t Fee Paid \n");
+			System.out.print("---------------------------------------------------------\n");
+			allStudents.get(studentIndex).print();
+			System.out.print("---------------------------------------------------------\n \n");
+			
+			System.out.println(" Press 'y' to make a payment \n for abowe student \n"
+					+ " or any key to back to admin menu");
+			
+			String adminChoice = input.next();
+			if (adminChoice.equals("y")) {
+				if (allStudents.get(studentIndex).getFee()) {
+					System.out.println("This student has paid all ready");
+					adminMenu();
+				}
+				else {
+					allStudents.get(studentIndex).payFee();
+					allStudents.get(studentIndex).print();
+				}
+			}
+		}		
+		catch (Exception e) {
+			
+			System.out.println("Wrong input, try again");
+			makePayment();
+		}
+		adminMenu();
+	}
 	
 	
 	/** helper function to check if character/s in user input are in correct format
