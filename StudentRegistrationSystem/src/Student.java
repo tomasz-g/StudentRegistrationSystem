@@ -47,17 +47,20 @@ public class Student {
 	}
 	
 	public void print() {
-		String studentFee;
-		if (feePaid == true) {
-			studentFee = "yes";
-		}  
-		else {
-			studentFee = "no";
-		}
+		
 		String formatedId = String.format("%03d", studentId);
-		System.out.print("| Student ID: " + formatedId + " | " + " Student Name: " + studentName 
-				+ " | " + "Course: " + studentCourse + " | "
-				+ "Fee Paid: " + studentFee + " |\n");
+		String formatedName = studentName;
+		int nameSpace = (18 - studentName.length());
+		for (int i=0; i<nameSpace; i++) {
+			formatedName += " ";
+		}
+		String studentFee = " no  ";
+		if (feePaid == true) {
+			studentFee = " yes ";
+		}  
+		
+		System.out.print("|  " + formatedId + "  | " + formatedName 
+				+ " | " + studentCourse + " | " + studentFee + " |\n");	
 	}
 
 }

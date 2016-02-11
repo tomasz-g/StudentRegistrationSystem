@@ -11,24 +11,28 @@ import java.io.InputStreamReader;
 	 
 	
 	 static ArrayList<Student> allStudents = new ArrayList<Student>();
-	 static ArrayList<Student> computerScienceallStudents = new ArrayList<Student>();
-	 static ArrayList<Student> gameDesignallStudents = new ArrayList<Student>();
+	 static ArrayList<Student> computerScienceStudents = new ArrayList<Student>();
+	 static ArrayList<Student> gameDesignStudents = new ArrayList<Student>();
 	 
+	 public static Student newStudent;
 	 static int studentId = 1;
-	 
-	 
-	 private static void mainMenu() {
+	  
+	  
+	 public static void mainMenu() {
 		
+		System.out.println("***********************************");
 		System.out.println("Press 1 to add stdent");
-		System.out.println("Press 2 for student/s data");
+		System.out.println("Press 2 for students data");
 		System.out.println("Press 3 for admin menu");
+		System.out.println("***********************************\n");
+
 		
 		String userChoice = input.next();
-		
+		   
 		switch(userChoice) {
 		
 			case "1": {
-				addStudent();
+				addStudentName();
 				break;
 			}
 			case "2": {
@@ -36,9 +40,7 @@ import java.io.InputStreamReader;
 				break;
 			}
 			case "3": {
-				System.out.println("TODO admin menu method...");
-				mainMenu();
-
+				adminMenu();
 				break;
 			}
 			default:{
@@ -49,38 +51,39 @@ import java.io.InputStreamReader;
 		}
 	}
 	 
-	 private static void addStudent() {
+	 
+	 public static void addStudentName() {
 		 
-		Student newStudent = new Student();
-		
+		 newStudent = new Student();
+		 
 		try {
-			System.out.println("*********************************");
+			System.out.println("***********************************");
 			System.out.println(" Enter student Name and Surname \n       seperated by space:");
-			System.out.println("*********************************");
+			System.out.println("***********************************\n");
 
 			String studentName = input2.readLine();		
 			
-			if (studentName.split(" ").length != 2) {
-				System.out.println(" Enter one word for name and one for surname, \n "
-						+ "if name or surname has more than one word seperate them by dash key '-'");
-				addStudent();
+			if (studentName.split(" ").length == 2 && correctFormat(studentName)) {
+				newStudent.setName(studentName);
 			}
-			newStudent.setName(studentName);
+			else {
+				printNameErrorMessage();
+			}
 		}
 		
 		catch (IOException e) {
-			System.out.println(" Error, wrong input  \n please try again");
-			addStudent();
+			printNameErrorMessage();
 		}
 		
-		newStudent.setId(studentId);
-		studentId++;
-		
-		while (newStudent.getCourse() == null) {
-			
-			System.out.println("*********************************");
-			System.out.println(" Choose student Course \n Press 1 for Computer Science \n Press 2 for Game Design" );
-			System.out.println("*********************************");
+		chooseStudentCourse();
+	 }
+	 
+	 
+	 public static void chooseStudentCourse() {
+		 
+			System.out.println("***********************************");
+			System.out.println(" Choose student Course: \n Press 1 for Computer Science \n Press 2 for Game Design" );
+			System.out.println("***********************************\n");
 			
 			String userChoice = input.next();
 			
@@ -88,56 +91,75 @@ import java.io.InputStreamReader;
 			
 				case "1": {
 					newStudent.chooseCourse("Computer Science");
-					computerScienceallStudents.add(newStudent);
+					computerScienceStudents.add(newStudent);
 					allStudents.add(newStudent);
 					break;
 				}
 				case "2": {
 					newStudent.chooseCourse("Game Design     ");
-					gameDesignallStudents.add(newStudent);
+					gameDesignStudents.add(newStudent);
 					allStudents.add(newStudent);
 					break;
 				}
 				default : {
-					System.out.println("Error, please try again");
+					System.out.println("outor, please try again");
+					chooseStudentCourse();
 					break;
 				}
 			}
-		}
+						
+			payFee();
+	 }
 		
-		System.out.println(" Press 'y' if student pay fee now \n Press any other key if student pay fee later");
-		
+	 
+	 public static void payFee() {
+		 
+		System.out.println("***********************************");
+		System.out.println(" Press 'y' if student pay fee now \n or any key if pay fee later");
+		System.out.println("***********************************\n");
+				
 		String userChoice = input.next();
-		
+				
 		if (userChoice.equals("y")) {
 			newStudent.payFee();
-			}
+		}
 		
-		mainMenu();
-	}
-	
+		setStudentId();
+	 }
+	 
+	 
+	 public static void setStudentId() {
+			newStudent.setId(studentId);
+			studentId++;
+			
+			mainMenu();
+	 }
+             
+	 
 	public static void studentInformation() {
 		
-		System.out.println("*********************************");
+		System.out.println("***********************************");
 		System.out
 				.println(" Press 1 for Computer Science class \n Press 2 for Game Design class \n"
 						+ " Press 3 for all allStudents \n Press 4 for main menu");
-		System.out.println("*********************************");
+		System.out.println("***********************************\n");
 
 		String userChoice = input.next();
-		ArrayList<Student> allStudentsToPrint = null;
 		
 		switch (userChoice) {
 			case "1": {
-				allStudentsToPrint = computerScienceallStudents;
+				printStudentsDetails(computerScienceStudents);
+				studentInformation();
 				break;
 			}
 			case "2": {  
-				allStudentsToPrint = gameDesignallStudents;
+				printStudentsDetails(gameDesignStudents);
+				studentInformation();
 				break;
 			}
 			case "3": {
-				allStudentsToPrint = allStudents;
+				printStudentsDetails(allStudents);
+				studentInformation();
 				break;
 			}
 			case "4": {
@@ -149,21 +171,121 @@ import java.io.InputStreamReader;
 				studentInformation();
 				break;
 			}
-		}
+		}		
+	}
+	
+	
+	public static void adminMenu() {
 		
-		if (allStudentsToPrint.size() < 1) {
-			System.out.println("No allStudents registered in this class");
+		System.out.println("***********************************");
+		System.out.println("Press 1 to change student details \n"
+				+ "Press 2 to delete student");		
+		System.out.println("***********************************\n");
+		
+		String adminChoice = input.next();
+		
+		switch (adminChoice) {
+			case "1": {
+				changeStudentDetails();
+				break;
+			}
+			case "2": {
+				deleteStudent();
+				break;
+			}
+			default: {
+				System.out.println("Wrong number, try again"); 
+				adminMenu();
+			}
+		}	
+	}
+	
+	
+	public static void printStudentsDetails(ArrayList<Student>  courseName) {
+		
+		if (courseName.size() < 1) {
+			System.out.println("***********************************");
+			System.out.println("No Students registered in this class");
+			System.out.println("***********************************\n");
 		}
 		else {
-			System.out.println("______________________________________________________________________________________________");
-			for(Student studentDetails : allStudentsToPrint) {
-				studentDetails.print();
+			System.out.print("   ID \t   Student Name \t Course \t Fee Paid \n");
+			System.out.print("---------------------------------------------------------\n");
+				for(Student studentDetails : courseName) {
+					studentDetails.print();
+				}
+				System.out.print("---------------------------------------------------------\n \n");
+		}
+	}
+	
+	public static void changeStudentDetails() {
+		
+		System.out.println("***********************************");
+		System.out.println(" Choose student by ID \n from the list below:");
+		System.out.println("***********************************\n");
+
+		printStudentsDetails(allStudents);
+		
+		
+//		int adminChoice;
+		try {
+			int adminChoice = input2.read();
+			System.out.print("   ID \t   Student Name \t Course \t Fee Paid \n");
+			System.out.print("---------------------------------------------------------\n");
+			allStudents.get(adminChoice -1).print();
+			System.out.print("---------------------------------------------------------\n \n");
+		}
+		catch (IOException e) {
+			printNameErrorMessage();
+//			e.printStackTrace();
+		}		
+		changeStudentDetails(); 
+//		mainMenu();
+	}
+	
+	
+	public static void deleteStudent() {
+		
+	}
+	
+	
+	/** helper function to check if character/s in user input are in correct format
+	 * returns true if all characters in user input are alphabetic character or space
+	 * returns false otherwise 
+	 * 
+	 * (String) --> (boolean)
+	 * 
+	 * correctFormat("Joe Bloggs")
+	 * >>> true
+	 * 
+	 * correctFormat("John Coffe")
+	 * >>> true
+	 * 
+	 * correctFormat(Fred12)
+	 * >>> false
+	 */
+	static boolean correctFormat(String userInput) {
+		int loopLength = userInput.length();
+		
+		for (int charIndx = 0; charIndx < loopLength; charIndx++) {	
+			char spaceCharacter = ' ';
+			char charInput = userInput.charAt(charIndx);
+			if (!Character.isLetter(charInput) && charInput != spaceCharacter) {
+				return false;
 			}
 		}
+		return true;
+	}
+	
+	
+	public static void printNameErrorMessage() {
+		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+		System.out.println(" Enter one word for name and one for surname, \n "
+				+ "if name or surname has more than one word \n seperate them by dash key '-' \n"
+				+ "only alphabetic characters are allowed");
+		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
 		
-		System.out.println("______________________________________________________________________________________________");
-		System.out.println("*" );
-		studentInformation();
+		addStudentName();
 	}
 
 
