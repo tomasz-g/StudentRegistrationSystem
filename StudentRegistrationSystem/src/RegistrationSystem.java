@@ -102,7 +102,7 @@ import java.io.InputStreamReader;
 					break;
 				}
 				default : {
-					System.out.println("outor, please try again");
+					System.out.println("Wrong input, try again");
 					chooseStudentCourse();
 					break;
 				}
@@ -167,7 +167,7 @@ import java.io.InputStreamReader;
 				break;
 			}
 			default: {
-				System.out.println("Wrong number, try again"); 
+				System.out.println("Wrong input, try again");
 				studentInformation();
 				break;
 			}
@@ -178,6 +178,34 @@ import java.io.InputStreamReader;
 	public static void adminMenu() {
 		
 		System.out.println("***********************************");
+		System.out.println(" Choose student by ID \n from the list below:");
+		System.out.println("***********************************\n");
+
+		printStudentsDetails(allStudents);
+
+		try {
+			
+			int studentIndex = input.nextInt() -1;
+			allStudents.get(studentIndex);
+			System.out.print("   ID \t   Student Name \t Course \t Fee Paid \n");
+			System.out.print("---------------------------------------------------------\n");
+			allStudents.get(studentIndex).print();
+			System.out.print("---------------------------------------------------------\n \n");
+			
+			chooseAction(studentIndex);
+		}
+		
+		catch (IndexOutOfBoundsException e) {
+			
+			System.out.println("Wrong input, try again");
+			adminMenu();
+		}	
+	}
+	
+	
+	public static void chooseAction(int studentIndex) {
+		
+		System.out.println("***********************************");
 		System.out.println("Press 1 to change student details \n"
 				+ "Press 2 to delete student");		
 		System.out.println("***********************************\n");
@@ -186,18 +214,18 @@ import java.io.InputStreamReader;
 		
 		switch (adminChoice) {
 			case "1": {
-				changeStudentDetails();
+				changeStudentDetails(studentIndex);
 				break;
 			}
 			case "2": {
-				deleteStudent();
+				deleteStudent(studentIndex);
 				break;
 			}
 			default: {
-				System.out.println("Wrong number, try again"); 
-				adminMenu();
+				System.out.println("Wrong input, try again");
+				chooseAction(studentIndex);
 			}
-		}	
+		}
 	}
 	
 	
@@ -218,33 +246,21 @@ import java.io.InputStreamReader;
 		}
 	}
 	
-	public static void changeStudentDetails() {
+	public static void changeStudentDetails(int studentIndex) {
 		
-		System.out.println("***********************************");
-		System.out.println(" Choose student by ID \n from the list below:");
-		System.out.println("***********************************\n");
-
-		printStudentsDetails(allStudents);
+		System.out.println();
 		
+		String adminChoice = input.next();
 		
-//		int adminChoice;
-		try {
-			int adminChoice = input2.read();
-			System.out.print("   ID \t   Student Name \t Course \t Fee Paid \n");
-			System.out.print("---------------------------------------------------------\n");
-			allStudents.get(adminChoice -1).print();
-			System.out.print("---------------------------------------------------------\n \n");
+		switch (adminChoice) {
+			case "1": {
+				
+			}
 		}
-		catch (IOException e) {
-			printNameErrorMessage();
-//			e.printStackTrace();
-		}		
-		changeStudentDetails(); 
-//		mainMenu();
 	}
+
 	
-	
-	public static void deleteStudent() {
+	public static void deleteStudent(int studentIndex) {
 		
 	}
 	
