@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.io.BufferedReader;
-import java.io.IOException;
+//import java.io.IOException;
 import java.io.InputStreamReader;
 
  public class RegistrationSystem {
@@ -32,7 +32,7 @@ import java.io.InputStreamReader;
 		switch(userChoice) {
 		
 			case "1": {
-				addStudentName();
+				setStudentId();
 				break;
 			}
 			case "2": {
@@ -40,7 +40,8 @@ import java.io.InputStreamReader;
 				break;
 			}
 			case "3": {
-				adminMenu();
+//				adminMenu();
+				mainMenu();
 				break;
 			}
 			default:{
@@ -51,10 +52,20 @@ import java.io.InputStreamReader;
 		}
 	}
 	 
-	 
-	 public static void addStudentName() {
+
+	 public static void setStudentId() {
 		 
 		 newStudent = new Student();
+
+		newStudent.setId(studentId);
+		allStudents.add(newStudent);
+		setStudentName(studentId -1);
+		studentId++;		
+	 }
+	 
+	  
+	 public static void setStudentName(int studentIndex) {
+		 
 		 
 		try {
 			System.out.println("***********************************");
@@ -64,22 +75,34 @@ import java.io.InputStreamReader;
 			String studentName = input2.readLine();		
 			
 			if (studentName.split(" ").length == 2 && correctFormat(studentName)) {
-				newStudent.setName(studentName);
+				allStudents.get(studentIndex).setName(studentName);
 			}
 			else {
-				printNameErrorMessage();
+				System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+				System.out.println(" Enter one word for name and one for surname, \n "
+						+ "if name or surname has more than one word \n seperate them by dash key '-' \n"
+						+ "only alphabetic characters are allowed");
+				System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
+				setStudentName(studentIndex);
+//				printNameErrorMessage();
 			}
 		}
 		
-		catch (IOException e) {
-			printNameErrorMessage();
+		catch (Exception e) {
+			System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+			System.out.println(" Enter one word for name and one for surname, \n "
+					+ "if name or surname has more than one word \n seperate them by dash key '-' \n"
+					+ "only alphabetic characters are allowed");
+			System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
+			setStudentName(studentIndex);
+//			printNameErrorMessage();
 		}
 		
-		chooseStudentCourse();
+		chooseStudentCourse(studentIndex);
 	 }
 	 
 	 
-	 public static void chooseStudentCourse() {
+	 public static void chooseStudentCourse(int studentIndex) {
 		 
 			System.out.println("***********************************");
 			System.out.println(" Choose student Course: \n Press 1 for Computer Science \n Press 2 for Game Design" );
@@ -90,29 +113,25 @@ import java.io.InputStreamReader;
 			switch(userChoice) {
 			
 				case "1": {
-					newStudent.chooseCourse("Computer Science");
-					computerScienceStudents.add(newStudent);
-					allStudents.add(newStudent);
+					allStudents.get(studentIndex).chooseCourse("Computer Science");
 					break;
 				}
 				case "2": {
-					newStudent.chooseCourse("Game Design     ");
-					gameDesignStudents.add(newStudent);
-					allStudents.add(newStudent);
+					allStudents.get(studentIndex).chooseCourse("Game Design     ");
 					break;
 				}
 				default : {
 					System.out.println("Wrong input, try again");
-					chooseStudentCourse();
+					chooseStudentCourse(studentIndex);
 					break;
 				}
 			}
 						
-			payFee();
+			payFee(studentIndex);
 	 }
 		
 	 
-	 public static void payFee() {
+	 public static void payFee(int studentIndex) {
 		 
 		System.out.println("***********************************");
 		System.out.println(" Press 'y' if student pay fee now \n or any key if pay fee later");
@@ -121,18 +140,10 @@ import java.io.InputStreamReader;
 		String userChoice = input.next();
 				
 		if (userChoice.equals("y")) {
-			newStudent.payFee();
+			allStudents.get(studentIndex).payFee();
 		}
 		
-		setStudentId();
-	 }
-	 
-	 
-	 public static void setStudentId() {
-			newStudent.setId(studentId);
-			studentId++;
-			
-			mainMenu();
+		mainMenu();
 	 }
              
 	 
@@ -175,58 +186,103 @@ import java.io.InputStreamReader;
 	}
 	
 	
-	public static void adminMenu() {
-		
-		System.out.println("***********************************");
-		System.out.println(" Choose student by ID \n from the list below:");
-		System.out.println("***********************************\n");
-
-		printStudentsDetails(allStudents);
-
-		try {
-			
-			int studentIndex = input.nextInt() -1;
-			allStudents.get(studentIndex);
-			System.out.print("   ID \t   Student Name \t Course \t Fee Paid \n");
-			System.out.print("---------------------------------------------------------\n");
-			allStudents.get(studentIndex).print();
-			System.out.print("---------------------------------------------------------\n \n");
-			
-			chooseAction(studentIndex);
-		}
-		
-		catch (IndexOutOfBoundsException e) {
-			
-			System.out.println("Wrong input, try again");
-			adminMenu();
-		}	
-	}
+//	public static void adminMenu() {
+//		
+//		System.out.println("***********************************");
+//		System.out.println("Press 1 to change student details \n"
+//				+ "Press 2 to delete student \n Press 3 to check students payments");		
+//		System.out.println("***********************************\n");
+//		
+//		String adminChoice = input.next();
+//		
+//		switch (adminChoice) {
+//			case "1": {
+//				changeStudentDetails();
+//				break;
+//			}
+//			case "2": {
+//				deleteStudent(studentIndex);
+//				break;
+//			}
+//			case "3": {
+//				printPayment();
+//				break;
+//			}
+//			default: {
+//				System.out.println("Wrong input, try again");
+//				adminMenu();
+//			}
+//		}
+//	}
 	
 	
-	public static void chooseAction(int studentIndex) {
-		
-		System.out.println("***********************************");
-		System.out.println("Press 1 to change student details \n"
-				+ "Press 2 to delete student");		
-		System.out.println("***********************************\n");
-		
-		String adminChoice = input.next();
-		
-		switch (adminChoice) {
-			case "1": {
-				changeStudentDetails(studentIndex);
-				break;
-			}
-			case "2": {
-				deleteStudent(studentIndex);
-				break;
-			}
-			default: {
-				System.out.println("Wrong input, try again");
-				chooseAction(studentIndex);
-			}
-		}
-	}
+//	public static void changeStudentDetails() {
+//		
+//		System.out.println("***********************************");
+//		System.out.println(" Choose student by ID \n from the list below:");
+//		System.out.println("***********************************\n");
+//
+//		printStudentsDetails(allStudents);
+//
+//		try {
+//			
+//			int studentIndex = input.nextInt() -1;
+//			allStudents.get(studentIndex);
+//			System.out.print("   ID \t   Student Name \t Course \t Fee Paid \n");
+//			System.out.print("---------------------------------------------------------\n");
+//			allStudents.get(studentIndex).print();
+//			System.out.print("---------------------------------------------------------\n \n");
+//			
+//			chooseAction(studentIndex);
+//		}
+//		
+//		catch (Exception e) {
+//			
+//			System.out.println("Wrong input, try again");
+//			adminMenu();
+//		}	
+//	}
+//	
+//	
+//	public static void chooseAction(int studentIndex) {
+//		
+//		System.out.println(" Press 1 to change student Name \n"
+//				+ "Press 2 to change student class \n"
+//				+ "Press 3 for payment \n"
+//				+ "Press 4 to remove student fro the system"
+//				+ "Press 5 to back to Main Menu");
+//		
+//		String adminChoice = input.next();
+//		
+//		switch (adminChoice) {
+//			
+//			case "1": {
+////				NEED TO CHANGE IN THE GAME OR SCIENCE CLASS TO!!!
+//				
+//				
+//				break;
+//			}
+//			case "2": {
+//				break;
+//			}
+//			case "3": {
+//				break;
+//			}
+//			case "4": {
+//				deleteStudent(studentIndex);
+//				break;
+//			}
+//			case "5": {
+//				mainMenu();
+//				break;
+//			}
+//			default: {
+//				System.out.println("Wrong input, try again");
+//				break;
+//			}
+//			
+//		}
+//	}
 	
 	
 	public static void printStudentsDetails(ArrayList<Student>  courseName) {
@@ -245,24 +301,55 @@ import java.io.InputStreamReader;
 				System.out.print("---------------------------------------------------------\n \n");
 		}
 	}
-	
-	public static void changeStudentDetails(int studentIndex) {
-		
-		System.out.println();
-		
-		String adminChoice = input.next();
-		
-		switch (adminChoice) {
-			case "1": {
-				
-			}
-		}
-	}
+
 
 	
-	public static void deleteStudent(int studentIndex) {
-		
-	}
+//	public static void deleteStudent(int studentIndex) {
+//		
+//		allStudents.remove(studentIndex);
+////		NEED TO REMOVE FROM THE GAME OR SCIENCE CLASS TO!!!
+//		mainMenu();
+//		
+//	}
+//	
+//	
+//	public static void printPayment() {
+//		
+//		System.out.println(" Press 1 to check students with payment \n "
+//				+ "Press 2 to check students without payment");
+//		
+//		String adminChoice = input.next();
+//		
+//		switch (adminChoice) {
+//			case "1": {
+//				for (int studentIndex = 0; studentIndex < allStudents.size(); studentIndex++) {
+//					
+//					System.out.print("   ID \t   Student Name \t Course \t Fee Paid \n");
+//					System.out.print("---------------------------------------------------------\n");
+//					if (allStudents.get(studentIndex).getFee()) {
+//						allStudents.get(studentIndex).print();
+//					}
+//					System.out.print("---------------------------------------------------------\n \n");					
+//				}
+//				
+//			}
+//			case "2": {
+//				for (int studentIndex = 0; studentIndex < allStudents.size(); studentIndex++) {
+//					
+//					System.out.print("   ID \t   Student Name \t Course \t Fee Paid \n");
+//					System.out.print("---------------------------------------------------------\n");
+//					if (!allStudents.get(studentIndex).getFee()) {
+//						allStudents.get(studentIndex).print();
+//					}
+//					System.out.print("---------------------------------------------------------\n \n");					
+//				}
+//			}
+//			default: {
+//				System.out.println("Wrong input, try again");
+//				printPayment();
+//			}
+//		}
+//	}
 	
 	
 	/** helper function to check if character/s in user input are in correct format
@@ -294,15 +381,15 @@ import java.io.InputStreamReader;
 	}
 	
 	
-	public static void printNameErrorMessage() {
-		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-		System.out.println(" Enter one word for name and one for surname, \n "
-				+ "if name or surname has more than one word \n seperate them by dash key '-' \n"
-				+ "only alphabetic characters are allowed");
-		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
-		
-		addStudentName();
-	}
+//	public static void printNameErrorMessage() {
+//		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+//		System.out.println(" Enter one word for name and one for surname, \n "
+//				+ "if name or surname has more than one word \n seperate them by dash key '-' \n"
+//				+ "only alphabetic characters are allowed");
+//		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
+//		
+//		addStudentName();
+//	}
 
 
 	 public static void main(String[] args) {
