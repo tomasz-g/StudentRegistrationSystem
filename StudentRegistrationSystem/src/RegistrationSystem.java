@@ -1,8 +1,9 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.io.BufferedReader;
-//import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.IOException;
+
 
  public class RegistrationSystem {
 	
@@ -15,9 +16,9 @@ import java.io.InputStreamReader;
 	 static ArrayList<Student> gameDesignStudents = new ArrayList<Student>();
 	 
 	 public static Student newStudent;
-	 static int studentId = 1;
+	 static int studentId = 0;
 	  
-	  
+	   
 	 public static void mainMenu() {
 		
 		System.out.println("***********************************");
@@ -26,7 +27,6 @@ import java.io.InputStreamReader;
 		System.out.println("Press 3 for admin menu");
 		System.out.println("***********************************\n");
 
-		
 		String userChoice = input.next();
 		   
 		switch(userChoice) {
@@ -41,6 +41,7 @@ import java.io.InputStreamReader;
 			}
 			case "3": {
 //				adminMenu();
+				System.out.println("Not implemented yet....");
 				mainMenu();
 				break;
 			}
@@ -55,17 +56,16 @@ import java.io.InputStreamReader;
 
 	 public static void setStudentId() {
 		 
+		studentId++;		
 		 newStudent = new Student();
 
 		newStudent.setId(studentId);
 		allStudents.add(newStudent);
 		setStudentName(studentId -1);
-		studentId++;		
 	 }
 	 
 	  
 	 public static void setStudentName(int studentIndex) {
-		 
 		 
 		try {
 			System.out.println("***********************************");
@@ -76,26 +76,17 @@ import java.io.InputStreamReader;
 			
 			if (studentName.split(" ").length == 2 && correctFormat(studentName)) {
 				allStudents.get(studentIndex).setName(studentName);
+				chooseStudentCourse(studentIndex);
 			}
 			else {
-				System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-				System.out.println(" Enter one word for name and one for surname, \n "
-						+ "if name or surname has more than one word \n seperate them by dash key '-' \n"
-						+ "only alphabetic characters are allowed");
-				System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
+				printNameErrorMessage();
 				setStudentName(studentIndex);
-//				printNameErrorMessage();
 			}
 		}
 		
-		catch (Exception e) {
-			System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-			System.out.println(" Enter one word for name and one for surname, \n "
-					+ "if name or surname has more than one word \n seperate them by dash key '-' \n"
-					+ "only alphabetic characters are allowed");
-			System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
+		catch (IOException e) {
+			printNameErrorMessage();
 			setStudentName(studentIndex);
-//			printNameErrorMessage();
 		}
 		
 		chooseStudentCourse(studentIndex);
@@ -103,7 +94,7 @@ import java.io.InputStreamReader;
 	 
 	 
 	 public static void chooseStudentCourse(int studentIndex) {
-		 
+		 		 
 			System.out.println("***********************************");
 			System.out.println(" Choose student Course: \n Press 1 for Computer Science \n Press 2 for Game Design" );
 			System.out.println("***********************************\n");
@@ -114,10 +105,12 @@ import java.io.InputStreamReader;
 			
 				case "1": {
 					allStudents.get(studentIndex).chooseCourse("Computer Science");
+					computerScienceStudents.add(allStudents.get(studentIndex));
 					break;
 				}
 				case "2": {
 					allStudents.get(studentIndex).chooseCourse("Game Design     ");
+					gameDesignStudents.add(allStudents.get(studentIndex));
 					break;
 				}
 				default : {
@@ -132,7 +125,7 @@ import java.io.InputStreamReader;
 		
 	 
 	 public static void payFee(int studentIndex) {
-		 
+		 		 
 		System.out.println("***********************************");
 		System.out.println(" Press 'y' if student pay fee now \n or any key if pay fee later");
 		System.out.println("***********************************\n");
@@ -184,6 +177,25 @@ import java.io.InputStreamReader;
 			}
 		}		
 	}
+	
+	
+	public static void printStudentsDetails(ArrayList<Student>  courseName) {
+		
+		if (courseName.size() < 1) {
+			System.out.println("***********************************");
+			System.out.println("No Students registered in this class");
+			System.out.println("***********************************\n");
+		}
+		else {
+			System.out.print("   ID \t   Student Name \t Course \t Fee Paid \n");
+			System.out.print("---------------------------------------------------------\n");
+				for(Student studentDetails : courseName) {
+					studentDetails.print();
+				}
+				System.out.print("---------------------------------------------------------\n \n");
+		}
+	}
+
 	
 	
 //	public static void adminMenu() {
@@ -283,25 +295,6 @@ import java.io.InputStreamReader;
 //			
 //		}
 //	}
-	
-	
-	public static void printStudentsDetails(ArrayList<Student>  courseName) {
-		
-		if (courseName.size() < 1) {
-			System.out.println("***********************************");
-			System.out.println("No Students registered in this class");
-			System.out.println("***********************************\n");
-		}
-		else {
-			System.out.print("   ID \t   Student Name \t Course \t Fee Paid \n");
-			System.out.print("---------------------------------------------------------\n");
-				for(Student studentDetails : courseName) {
-					studentDetails.print();
-				}
-				System.out.print("---------------------------------------------------------\n \n");
-		}
-	}
-
 
 	
 //	public static void deleteStudent(int studentIndex) {
@@ -381,15 +374,13 @@ import java.io.InputStreamReader;
 	}
 	
 	
-//	public static void printNameErrorMessage() {
-//		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-//		System.out.println(" Enter one word for name and one for surname, \n "
-//				+ "if name or surname has more than one word \n seperate them by dash key '-' \n"
-//				+ "only alphabetic characters are allowed");
-//		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
-//		
-//		addStudentName();
-//	}
+	public static void printNameErrorMessage() {
+		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+		System.out.println(" Enter one word for name and one for surname, \n "
+				+ "if name or surname has more than one word \n seperate them by dash key '-' \n"
+				+ "only alphabetic characters are allowed");
+		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");		
+	}
 
 
 	 public static void main(String[] args) {
