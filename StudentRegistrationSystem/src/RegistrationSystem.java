@@ -11,9 +11,13 @@
  * - payment
  * - student ID (created automatically, can not be modify by the user)
  * to database and allow user to access and manipulate data
- * of each student or remove it
+ * of each student or remove student
+ * 
+ * Note: double click on console tab after running for better visibility
+ * 	         please do not enter name + surname longer than 18 characters
+ * 			 (may occurs errors)
  */
-
+  
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.io.BufferedReader;
@@ -61,12 +65,32 @@ import java.text.DecimalFormat;
 				break;
 			}
 			case "2": {
-				studentInformation();
-				break;
+				if (allStudents.size() > 0) {
+					studentInformation();
+					break;
+				}
+				else {
+					System.out.println("***********************************");
+					System.out.println(" No students registered  \n"
+							+ " Register at least one student \n to access student data");
+					System.out.println("***********************************");
+					mainMenu();
+					break;
+				}
 			}
 			case "3": {
-				adminMenu();
-				break;
+				if (allStudents.size() > 0) {
+					adminMenu();
+					break;
+				}
+				else {
+					System.out.println("***********************************");
+					System.out.println(" No students registered \n"
+							+ " Register at least one student \n to access admin menu");
+					System.out.println("*********************************** \n");
+					mainMenu();
+					break;
+				}
 			}
 			default:{
 				System.out.println("Wrong input, try again");
@@ -158,25 +182,30 @@ import java.text.DecimalFormat;
 	 /** pay fee and/or back to main menu
 	  */
 	 public static void payFee(int studentIndex) {
-		 		 
-		System.out.println("***********************************");
-		System.out.println(" Press 'y' if student pay fee now \n or any key if pay fee later");
-		System.out.println("***********************************\n");
-				
-		String userChoice = input.next();
-		if (userChoice.equals("y")) {
-			validateCash(studentIndex);
-		}
-		else {
-			mainMenu();
-		}
+		 
+		 if (allStudents.get(studentIndex).getFee()) {	 
+			 mainMenu();
+		 }
+		 else {
+			 System.out.println("***********************************");
+			 System.out.println(" Press 'y' if student pay fee now \n or any key if pay fee later");
+			 System.out.println("***********************************\n");
+						
+			String userChoice = input.next();
+			if (userChoice.equals("y")) {
+				validateCash(studentIndex);
+			}
+			else {
+				mainMenu();
+			}			 
+		 }
 	 }
 	 
 	 
 	 /** Calculate and print balance of transaction and check if customer insert is in correct format
 		 * print warning message if insert is in wrong format
 		 * print message with transaction information 
-		 * and back to main screen when transaction is finish
+		 * and back to main menu when transaction is finish
 		 */
 		static void validateCash(int studentIndex) {
 			
@@ -207,7 +236,9 @@ import java.text.DecimalFormat;
 					finishTransactionMessage = "\n Pickup your  \n €"
 							+  twoDecimal.format(customerChange) + " change.";
 				}
-			System.out.println("Thank You " + finishTransactionMessage +  "\n ");
+				System.out.println("==========================================");
+			System.out.println(" Thank You " + finishTransactionMessage );
+			System.out.println("========================================== \n");
 			
 			allStudents.get(studentIndex).payFee();
 			mainMenu();
@@ -361,7 +392,7 @@ import java.text.DecimalFormat;
 			
 			System.out.println("***********************************");
 			System.out.println(" Press 1 to change details of abowe student \n"
-					+ " Press 2 to delete student \n "
+					+ " Press 2 to delete student \n"
 					+ " Press any key to back to admin menu");
 			System.out.println("***********************************\n");
 			
@@ -420,7 +451,8 @@ import java.text.DecimalFormat;
 						allStudents.get(studentIndex).print();
 					}
 				}
-				System.out.print("---------------------------------------------------------\n \n");					
+				System.out.print("---------------------------------------------------------\n \n");		
+				adminMenu();
 				break;
 			}
 			case "2": {
@@ -431,7 +463,8 @@ import java.text.DecimalFormat;
 						allStudents.get(studentIndex).print();
 					}
 				}
-				System.out.print("---------------------------------------------------------\n \n");					
+				System.out.print("---------------------------------------------------------\n \n");		
+				adminMenu();
 				break;
 			}
 			default: {
@@ -439,7 +472,6 @@ import java.text.DecimalFormat;
 				printPayments();
 			}
 		}
-		adminMenu();
 	}
 	
 	
@@ -470,19 +502,22 @@ import java.text.DecimalFormat;
 			allStudents.get(studentIndex).print();
 			System.out.print("---------------------------------------------------------\n \n");
 			
-			System.out.println("***********************************");
-			System.out.println(" Press 'y' to make a payment \n for abowe student \n"
-					+ " or any key to back to admin menu");
-			System.out.println("*********************************** \n");
-			
-			String adminChoice = input.next();
-			if (adminChoice.equals("y")) {
-				if (allStudents.get(studentIndex).getFee()) {
-					System.out.println("This student has paid all ready");
-					adminMenu();
+			if (allStudents.get(studentIndex).getFee()) {
+				System.out.println("This student has paid all ready");
+				adminMenu();
+			}
+			else {
+				System.out.println("***********************************");
+				System.out.println(" Press 'y' to make a payment \n for abowe student \n"
+						+ " or any key to back to admin menu");
+				System.out.println("*********************************** \n");
+				
+				String adminChoice = input.next();
+				if (adminChoice.equals("y")) {
+					validateCash(studentIndex);
 				}
 				else {
-					payFee(studentIndex);
+					adminMenu();
 				}
 			}
 		}		
@@ -491,7 +526,6 @@ import java.text.DecimalFormat;
 			System.out.println("Wrong input, try again");
 			makePayment();
 		}
-		adminMenu();
 	}
 	
 	
@@ -500,12 +534,12 @@ import java.text.DecimalFormat;
 	 */
 	public static void printNameErrorMessage() {
 		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-		System.out.println(" Enter one word for name and one for surname, \n "
+		System.out.println(" Enter one word for name and one for surname \n "
+				+ "seperated by one space \n"
 				+ "if name or surname has more than one word \n seperate them by dash key '-' \n"
 				+ "only alphabetic characters are allowed");
 		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");		
 	}
-	
 	
 	/** helper function to check if character/s in user input are in correct format
 	 * returns true if all characters in user input are alphabetic character or space
@@ -576,7 +610,6 @@ import java.text.DecimalFormat;
 		}
 		return returnName;
 	}
-	
 	
 	/** helper function to check if inserted amount of money is in correct format 
 	 * returns true if dot is maximum at decimal argument and false otherwise
