@@ -46,6 +46,11 @@ public class Student {
 		feePaid = true;
 	}
 	
+	
+	/** format studentId to three digits
+	 * add spaces to the end of the name to make all names the same length (up to 18 letters)
+	 * print student details to the console
+	 */
 	public void print() {
 		
 		String formatedId = String.format("%03d", studentId);
@@ -58,7 +63,6 @@ public class Student {
 		if (feePaid == true) {
 			studentFee = " yes ";
 		}  
-		
 		System.out.print("|  " + formatedId + "  | " + formatedName 
 				+ " | " + studentCourse + " | " + studentFee + " |\n");	
 	}

@@ -1,3 +1,19 @@
+/**
+ * @author tomasz golas 
+ * project for BFEI CSCA class 12/02/2016
+ * Fundamental of Object Oriented Programming in JAVA
+ * 
+ * basic Student Registration System
+ * Program allow user to register students with:
+ * - name
+ * - surname
+ * - one of two courses choice
+ * - payment
+ * - student ID (created automatically, can not be modify by the user)
+ * to database and allow user to access and manipulate data
+ * of each student or remove it
+ */
+
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.io.BufferedReader;
@@ -19,6 +35,13 @@ import java.io.IOException;
 	 static int studentId = 0;
 	  
 	   
+	 /** program main screen
+	  * print three choices for user 
+	  * - user can add student to the data base, 
+	  * - check students details
+	  * - go to admin menu
+	  * print error message if user choose invalid option
+	  */
 	 public static void mainMenu() {
 		
 		System.out.println("***********************************");
@@ -52,6 +75,8 @@ import java.io.IOException;
 	}
 	 
 
+	 /** create student object, set student ID and add it to database  
+	  */
 	 public static void setStudentId() {
 		 
 		studentId++;		
@@ -63,6 +88,11 @@ import java.io.IOException;
 	 }
 	 
 	  
+	 /** print message to the user
+	  * set student name and surname if user input is in correct format
+	  * print error message otherwise
+	  * continue to course option method
+	  */
 	 public static void setStudentName(int studentIndex) {
 		 
 		try {
@@ -71,8 +101,9 @@ import java.io.IOException;
 			System.out.println("***********************************\n");
 
 			String studentName = input2.readLine();		
-			String formatedStudentName = formatName(studentName);
+			String formatedStudentName = formatName(studentName); //format user input
 			
+			//check if user input is in correct format and set student name if it is
 			if (formatedStudentName.split(" ").length == 2 && correctFormat(formatedStudentName)) {
 				allStudents.get(studentIndex).setName(formatedStudentName);
 				chooseStudentCourse(studentIndex);
@@ -92,6 +123,10 @@ import java.io.IOException;
 	 }
 	 
 	 
+	 /** set student course which is chosen by user
+	  * continue to pay fee option method
+	  * print error message if user choose invalid option
+	  */
 	 public static void chooseStudentCourse(int studentIndex) {
 		 		 
 			System.out.println("***********************************");
@@ -120,7 +155,8 @@ import java.io.IOException;
 			payFee(studentIndex);
 	 }
 		
-	 
+	 /** pay fee and / or back to main menu
+	  */
 	 public static void payFee(int studentIndex) {
 		 		 
 		System.out.println("***********************************");
@@ -137,6 +173,11 @@ import java.io.IOException;
 	 }
              
 	 
+	 /** set list of student chooses by user to be printed by followed method 
+	  * user can chose only one course student details or all students details
+	  * or back to main menu
+	  * print error message if user choose invalid option
+	  */
 	public static void studentInformation() {
 		
 		System.out.println("***********************************");
@@ -188,6 +229,10 @@ import java.io.IOException;
 	}
 	
 	
+	/** print all informations about students in the data base
+	 * or message if chosen course has no student registered
+	 */
+
 	public static void printStudentsDetails(ArrayList<Student>  courseName) {
 		
 		if (courseName.size() < 1) {
@@ -206,6 +251,11 @@ import java.io.IOException;
 	}
 
 	
+	/** admin menu where user can choose option to  
+	 * check and / or manipulate all student details (except ID)
+	 *  or back to main menu
+	 * print error message if user choose invalid option
+	 */
 	public static void adminMenu() {
 		
 		System.out.println("***********************************");
@@ -242,6 +292,11 @@ import java.io.IOException;
 	}
 	
 	
+	/** print all students details
+	 * user can change or delete student details (except ID)
+	 * by choosing student ID
+     * print error message if user choose invalid option
+	 */
 	public static void changeStudentDetails() {
 		
 		System.out.println("***********************************");
@@ -288,7 +343,9 @@ import java.io.IOException;
 		}	
 	}
 	
-	
+	/** delete student from database
+	 * and back to admin menu
+	 */
 	public static void deleteStudent(int studentIndex) {
 		
 		allStudents.remove(studentIndex);
@@ -296,6 +353,9 @@ import java.io.IOException;
 	}
 	
 	
+	/** print student with or without payment
+	 * and back to admin menu
+	 */
 	public static void printPayments() {
 		
 		System.out.println("***********************************");
@@ -336,7 +396,11 @@ import java.io.IOException;
 		adminMenu();
 	}
 	
-	
+	/** change chosen student payment status 
+	 * print message if chosen student has paid
+	 * print error message if user choose invalid option
+	 * back to admin menu
+	 */
 	public static void makePayment() {
 		
 		System.out.println("***********************************");
@@ -450,7 +514,10 @@ import java.io.IOException;
 		return returnName;
 	}
 	
-	
+	/** method print Error message with instructions
+	 * for user
+	 * call from setName() method if user input is wrong
+	 */
 	public static void printNameErrorMessage() {
 		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 		System.out.println(" Enter one word for name and one for surname, \n "
