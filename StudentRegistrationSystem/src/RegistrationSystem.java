@@ -9,13 +9,14 @@
  * - surname
  * - one of two courses choice
  * - payment
- * - student ID (created automatically, can not be modify by the user)
+ * - student ID 
  * to database and allow user to access and manipulate data
  * of each student or remove student
+ * (student ID is created automatically, can not be modify by the user)
  * 
- * Note: double click on console tab after running for better visibility
- * 	         please do not enter name + surname longer than 18 characters
- * 			 (may occurs errors)
+ * Note:  table view with student/s details will change
+ *    		  if length of (name + surname) exceeds 18 Characters
+ * 			 Avoid if possible.
  */
   
 import java.util.ArrayList;
