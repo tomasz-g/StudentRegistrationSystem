@@ -19,13 +19,13 @@ import java.util.Scanner;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.IOException;
+import java.text.DecimalFormat;
 
 
  public class RegistrationSystem {
 	
 	 static Scanner input = new Scanner(System.in);
-	 static BufferedReader input2 = new BufferedReader(new InputStreamReader(System.in));
-	 
+	 static BufferedReader input2 = new BufferedReader(new InputStreamReader(System.in));	 
 	
 	 static ArrayList<Student> allStudents = new ArrayList<Student>();
 	 static ArrayList<Student> computerScienceStudents = new ArrayList<Student>();
@@ -33,6 +33,8 @@ import java.io.IOException;
 	 
 	 public static Student newStudent;
 	 static int studentId = 0;
+	 static double coursePrice = 120;
+	 static DecimalFormat twoDecimal = new DecimalFormat("0.00");
 	  
 	   
 	 /** program main screen
@@ -103,7 +105,7 @@ import java.io.IOException;
 			String studentName = input2.readLine();		
 			String formatedStudentName = formatName(studentName); //format user input
 			
-			//check if user input is in correct format and set student name if it is
+			//check if user input is in correct format
 			if (formatedStudentName.split(" ").length == 2 && correctFormat(formatedStudentName)) {
 				allStudents.get(studentIndex).setName(formatedStudentName);
 				chooseStudentCourse(studentIndex);
@@ -113,12 +115,10 @@ import java.io.IOException;
 				setStudentName(studentIndex);
 			}
 		}
-		
 		catch (IOException e) {
 			printNameErrorMessage();
 			setStudentName(studentIndex);
 		}
-		
 		chooseStudentCourse(studentIndex);
 	 }
 	 
@@ -150,12 +150,12 @@ import java.io.IOException;
 					chooseStudentCourse(studentIndex);
 					break;
 				}
-			}
-						
+			}				
 			payFee(studentIndex);
 	 }
 		
-	 /** pay fee and / or back to main menu
+	 
+	 /** pay fee and/or back to main menu
 	  */
 	 public static void payFee(int studentIndex) {
 		 		 
@@ -164,13 +164,54 @@ import java.io.IOException;
 		System.out.println("***********************************\n");
 				
 		String userChoice = input.next();
-				
 		if (userChoice.equals("y")) {
-			allStudents.get(studentIndex).payFee();
+			validateCash(studentIndex);
 		}
-		
-		mainMenu();
+		else {
+			mainMenu();
+		}
 	 }
+	 
+	 
+	 /** Calculate and print balance of transaction and check if customer insert is in correct format
+		 * print warning message if insert is in wrong format
+		 * print message with transaction information 
+		 * and back to main screen when transaction is finish
+		 */
+		static void validateCash(int studentIndex) {
+			
+			double currentCashEntered = 0;
+			
+			while (currentCashEntered < coursePrice) {
+				double balanceRemining = (coursePrice - currentCashEntered);
+				System.out.println("==========================================");
+				System.out.println(" Insert remining balance: \n " +"€" + twoDecimal.format(balanceRemining) + "\n and hit Enter");
+				System.out.println("==========================================");
+				String  insert = input.next();
+				
+				if(correctNumericFormat(insert) && isMaxDecimal(insert, 2)) {
+					double convertedInsert = Double.parseDouble(insert);   // convert String to Double
+					currentCashEntered += convertedInsert;
+				}
+				else {
+					System.out.println("******************************************");
+					System.out.println(
+							"Wrong currency! \n inserted value must be numeric \n and maximum of two decimal places.");
+					System.out.println("******************************************");
+				}
+			}
+				
+			String finishTransactionMessage = " ";
+				if  (currentCashEntered > coursePrice) {
+					double customerChange = (currentCashEntered - coursePrice);
+					finishTransactionMessage = "\n Pickup your  \n €"
+							+  twoDecimal.format(customerChange) + " change.";
+				}
+			System.out.println("Thank You " + finishTransactionMessage +  "\n ");
+			
+			allStudents.get(studentIndex).payFee();
+			mainMenu();
+		}
              
 	 
 	 /** set list of student chooses by user to be printed by followed method 
@@ -232,7 +273,6 @@ import java.io.IOException;
 	/** print all informations about students in the data base
 	 * or message if chosen course has no student registered
 	 */
-
 	public static void printStudentsDetails(ArrayList<Student>  courseName) {
 		
 		if (courseName.size() < 1) {
@@ -252,7 +292,7 @@ import java.io.IOException;
 
 	
 	/** admin menu where user can choose option to  
-	 * check and / or manipulate all student details (except ID)
+	 * check and manipulate all student details (except ID)
 	 *  or back to main menu
 	 * print error message if user choose invalid option
 	 */
@@ -308,7 +348,12 @@ import java.io.IOException;
 		try {
 			
 			int studentIndex = input.nextInt() -1;
+			
+/*			next code line is just for visual reason 
+ 			'kick' catch() method in case of any error
+  		    before any line is printed to the console */ 
 			allStudents.get(studentIndex);
+			
 			System.out.print("   ID \t   Student Name \t Course \t Fee Paid \n");
 			System.out.print("---------------------------------------------------------\n");
 			allStudents.get(studentIndex).print();
@@ -342,6 +387,7 @@ import java.io.IOException;
 			adminMenu();
 		}	
 	}
+	
 	
 	/** delete student from database
 	 * and back to admin menu
@@ -396,7 +442,8 @@ import java.io.IOException;
 		adminMenu();
 	}
 	
-	/** change chosen student payment status 
+	
+	/** make a payment for student
 	 * print message if chosen student has paid
 	 * print error message if user choose invalid option
 	 * back to admin menu
@@ -412,7 +459,12 @@ import java.io.IOException;
 		try {
 			
 			int studentIndex = input.nextInt() -1;
+			
+/*			next code line is just for visual reason 
+ 			'kick' catch() method in case of any error
+  		    before any line is printed to the console */ 
 			allStudents.get(studentIndex);
+
 			System.out.print("   ID \t   Student Name \t Course \t Fee Paid \n");
 			System.out.print("---------------------------------------------------------\n");
 			allStudents.get(studentIndex).print();
@@ -430,8 +482,7 @@ import java.io.IOException;
 					adminMenu();
 				}
 				else {
-					allStudents.get(studentIndex).payFee();
-					allStudents.get(studentIndex).print();
+					payFee(studentIndex);
 				}
 			}
 		}		
@@ -441,6 +492,18 @@ import java.io.IOException;
 			makePayment();
 		}
 		adminMenu();
+	}
+	
+	
+	/** method print Error message with instructions for user
+	 * is called from setName() method if user input is wrong type
+	 */
+	public static void printNameErrorMessage() {
+		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+		System.out.println(" Enter one word for name and one for surname, \n "
+				+ "if name or surname has more than one word \n seperate them by dash key '-' \n"
+				+ "only alphabetic characters are allowed");
+		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");		
 	}
 	
 	
@@ -456,7 +519,7 @@ import java.io.IOException;
 	 * correctFormat("John Coffe")
 	 * >>> true
 	 * 
-	 * correctFormat(Fred12)
+	 * correctFormat(Fred 32)
 	 * >>> false
 	 */
 	static boolean correctFormat(String userInput) {
@@ -514,16 +577,80 @@ import java.io.IOException;
 		return returnName;
 	}
 	
-	/** method print Error message with instructions
-	 * for user
-	 * call from setName() method if user input is wrong
+	
+	/** helper function to check if inserted amount of money is in correct format 
+	 * returns true if dot is maximum at decimal argument and false otherwise
+	 * 
+	 * (String, int) --> (boolean)
+	 * 
+	-- in this case maximum 2 decimal places --
+	
+	isMaxDecimal("123.23", 2)
+	>>> true
+	
+	isMaxDecimal("2.123.23", 2)
+	>>> true
+	
+	isMaxDecimal("1.2323", 2)
+	>>> false
+	*/
+	static boolean isMaxDecimal(String userInput, int decimal) {
+		int loopLength = userInput.length();
+		char testChar = '.';
+		int decimalPlaces = decimal;
+		
+		for (int charIndx = (loopLength -1); charIndx >= 0; charIndx--) {
+			char charInput = userInput.charAt(charIndx);
+
+			if (charInput == testChar) {
+				if (decimalPlaces >= 0) {
+					return true;
+				}
+				else {
+					return false;
+				}
+			}
+			decimalPlaces -= 1;
+		}
+		return true;
+	}
+	
+	/** helper function to check if character/s in user input are in correct format
+	 * returns true if all characters in user input are either integer or dot, 
+	 * dot is not first character and all dot's are separated with one or more integers, 
+	 * return false otherwise 
+	 * 
+	 * (String) --> (boolean)
+	 * 
+	 * correctFormat(234.5)
+	 * >>> true
+	 * 
+	 * correctFormat(12)
+	 * >>> true
+	 * 
+	 * correctFormat(abc)
+	 * >>> false
 	 */
-	public static void printNameErrorMessage() {
-		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-		System.out.println(" Enter one word for name and one for surname, \n "
-				+ "if name or surname has more than one word \n seperate them by dash key '-' \n"
-				+ "only alphabetic characters are allowed");
-		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");		
+	static boolean correctNumericFormat(String userInput) {
+		int loopLength = userInput.length();
+		char dotChar = '.';
+		int dotIndx = 0;
+		
+		for (int charIndx = 0; charIndx < loopLength; charIndx++) {	
+			char charInput = userInput.charAt(charIndx);
+			if (!Character.isDigit(charInput) && charInput != dotChar) {
+				return false;
+			}
+			else if (charInput == dotChar) {
+				if ((charIndx - dotIndx) < 2 && charIndx != 1) {
+					return false;
+				}
+				else {
+					dotIndx = charIndx;
+				}
+			}
+		}
+		return true;
 	}
 
 
@@ -531,5 +658,5 @@ import java.io.IOException;
 		
 		mainMenu();
 	}
-
+	 
 }
