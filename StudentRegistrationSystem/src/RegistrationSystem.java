@@ -71,7 +71,7 @@ import java.io.IOException;
 			System.out.println("***********************************\n");
 
 			String studentName = input2.readLine();		
-			
+			studentName = studentName.trim();
 //			System.out.println(studentName.substring(0,1).toUpperCase());
 //			System.out.println(studentName.substring(1).toLowerCase());
 			
@@ -402,11 +402,10 @@ import java.io.IOException;
 		
 		for (int charIndx = 0; charIndx < loopLength; charIndx++) {	
 			char spaceCharacter = ' ';
+			char dashCharacter = '-';
 			char charInput = userInput.charAt(charIndx);
-			if (!Character.isLetter(charInput) && charInput != spaceCharacter) {
-				return false;
-			}
-			else if(charInput == spaceCharacter && charIndx == 0) {
+			if (!Character.isLetter(charInput) && charInput != spaceCharacter 
+					&& charInput != dashCharacter) {
 				return false;
 			}
 		}
