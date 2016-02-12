@@ -71,12 +71,10 @@ import java.io.IOException;
 			System.out.println("***********************************\n");
 
 			String studentName = input2.readLine();		
-			studentName = studentName.trim();
-//			System.out.println(studentName.substring(0,1).toUpperCase());
-//			System.out.println(studentName.substring(1).toLowerCase());
+			String formatedStudentName = formatName(studentName);
 			
-			if (studentName.split(" ").length == 2 && correctFormat(studentName)) {
-				allStudents.get(studentIndex).setName(studentName);
+			if (formatedStudentName.split(" ").length == 2 && correctFormat(formatedStudentName)) {
+				allStudents.get(studentIndex).setName(formatedStudentName);
 				chooseStudentCourse(studentIndex);
 			}
 			else {
@@ -410,6 +408,46 @@ import java.io.IOException;
 			}
 		}
 		return true;
+	}
+	
+	/** helper function to format student name
+	 * returns name with Upper Case first letter of name and surname
+	 * and Lower Case the rest of the name and surname
+	 * remove Leading and Trailing Spaces
+	 * 
+	 * (String) --> (String)
+	 * 
+	 * formatName(" joE bloGGs")
+	 * >>> "Joe Bloggs"
+	 * 
+	 * formatName("AlEX gReen  ")
+	 * >>> "Alex Green"
+	 * 
+	 * formatName("  jaMes bond")
+	 * >>> "James Bond"
+	 */
+	public static String formatName(String stringToFormat) {
+		
+		String returnName = "";
+		char spaceCharacter = ' ';
+		String studentName = stringToFormat.trim();
+		int loopLength = studentName.length();
+		
+		for (int charIndex = 0; charIndex < loopLength; charIndex++) {
+			char charInput = studentName.charAt(charIndex);
+			if (charIndex == 0) {
+				returnName += Character.toUpperCase(charInput);
+			}
+			else if (charInput == spaceCharacter) {
+				returnName += spaceCharacter;
+				returnName += Character.toUpperCase(studentName.charAt(charIndex + 1));
+				charIndex++;
+			}
+			else {
+				returnName += Character.toLowerCase(charInput);
+			}
+		}
+		return returnName;
 	}
 	
 	
