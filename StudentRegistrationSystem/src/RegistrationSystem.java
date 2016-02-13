@@ -144,7 +144,6 @@ import java.text.DecimalFormat;
 			printNameErrorMessage();
 			setStudentName(studentIndex);
 		}
-		chooseStudentCourse(studentIndex);
 	 }
 	 
 	 
